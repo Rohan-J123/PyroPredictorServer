@@ -1,0 +1,18 @@
+{
+  "scripts": {
+    "build": "netlify deploy --prod"
+  },
+  "dependencies": {
+    "@google/earthengine": "^1.4.1",
+    "@netlify/functions": "^2.8.2",
+    "@turf/turf": "^7.1.0",
+    "cors": "^2.8.5",
+    "express": "^4.21.1",
+    "firebase": "^11.0.2",
+    "fs": "^0.0.1-security",
+    "google-auth-library": "^9.15.0",
+    "netlify-cli": "^17.37.2",
+    "netlify-lambda": "^2.0.16",
+    "serverless-http": "^3.2.0"
+  }
+}

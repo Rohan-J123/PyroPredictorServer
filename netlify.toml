@@ -1,0 +1,22 @@
+[build]
+    functions = "functions"
+
+[functions."reloader1"]
+    schedule = "* 19-21 * * *"
+    included_files = ["tmp/india_districts.geojson"]
+
+[functions."reloader2"]
+    schedule = "* 19-21 * * *"
+    included_files = ["tmp/india_districts.geojson"]
+
+[functions."reloader3"]
+    schedule = "* 19-21 * * *"
+    included_files = ["tmp/india_districts.geojson"]
+
+[functions."reloader4"]
+    schedule = "* 19-21 * * *"
+    included_files = ["tmp/india_districts.geojson"]
+
+[functions."reloader5"]
+    schedule = "* 19-21 * * *"
+    included_files = ["tmp/india_districts.geojson"]
