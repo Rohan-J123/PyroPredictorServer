@@ -9,32 +9,13 @@ const app = express();
 const router = express.Router();
 
 const { initializeApp } = require("firebase/app");
-const { getFirestore, doc, getDoc, setDoc } = require("firebase/firestore");
+const { getFirestore, collection, getDocs } = require("firebase/firestore");
 
 const firebaseConfig = process.env.YOU_WISH;
 
 const firebaseApp = initializeApp(firebaseConfig);
 const db = getFirestore(firebaseApp);
 var collectionName = "DistrictData"
-
-async function readDocument(documentId) {
-    try {
-        const docRef = doc(db, collectionName, documentId);
-        const docSnap = await getDoc(docRef);
-  
-    if (docSnap.exists()) {
-        const documentData = docSnap.data(); 
-        const jsonData = documentData;
-        return jsonData;
-    } else {
-        console.log("No such document!");
-        return null;
-    }
-    } catch (error) {
-        console.error("Error reading document:", error);
-        throw error;
-    }
-}
 
 const key = process.env.CLOSE_BUT_NO_CIGAR;
 
@@ -278,24 +259,6 @@ async function weather_Data(latitude, longitude) {
     }
 }
 
-async function getDistrictData(id) {
-    try {
-        const fileContent = await readDocument(String(id));
-
-        var district_data = []
-        for (let i = 0; i < 7; i++) {
-            let dataKey = "data" + i;
-            district_data.push(fileContent[dataKey])
-        }
-
-        return district_data;
-    } catch (error) {
-        console.error("Error reading or parsing JSON file:", error);
-        return null;
-    }
-}
-
-
 async function getData(latitude, longitude) {
     function getDateRange(i) {
         let now = new Date();
@@ -403,17 +366,16 @@ router.get('/getLocationData', async (req, res) => {
 });
 
 router.get('/getDistrictData', async (req, res) => {
-    const { districtID } = req.query;
-
-    if (!districtID) {
-        return res.status(400).send('District ID required.');
-    }
     try {
-        const data = await getDistrictData(parseInt(districtID));
+        const querySnapshot = await getDocs(collection(db, collectionName));
+        const data = querySnapshot.docs.map(doc => ({
+            id: doc.id,
+            ...doc.data()
+        }));
+        console.log("Collection data:", data);
         res.json(data);
     } catch (error) {
-        console.error('Error fetching data:', error);
-        res.status(500).send('Error fetching data');
+        console.error("Error retrieving documents:", error);
     }
 });
 
